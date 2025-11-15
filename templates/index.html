@@ -1,0 +1,16 @@
+<!doctype html>
+<title>SQLi Demo</title>
+<h2>SQLi Demo</h2>
+<form action="/search_vuln" method="post">
+  <label>Vulnerable search:</label>
+  <input type="text" name="username" placeholder="username">
+  <button type="submit">Search (vuln)</button>
+</form>
+
+<form action="/search_secure" method="post" style="margin-top:1rem;">
+  <label>Secure search (with detector):</label>
+  <input type="text" name="username" placeholder="username">
+  <button type="submit">Search (secure)</button>
+</form>
+
+<p>Try payloads like: <code>' OR '1'='1</code> or <code>admin' --</code></p>

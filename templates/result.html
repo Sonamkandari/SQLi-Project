@@ -1,0 +1,13 @@
+<!doctype html>
+<title>Result</title>
+<h3>{{endpoint}}</h3>
+<p>Query: <b>{{query}}</b></p>
+<h4>Results:</h4>
+<ul>
+  {% for r in results %}
+    <li>{{r}}</li>
+  {% else %}
+    <li>No results</li>
+  {% endfor %}
+</ul>
+<p><a href="/">Back</a></p>
