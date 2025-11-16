@@ -7,7 +7,6 @@ app = Flask(__name__)
 def query_db_param(username):
     conn = sqlite3.connect('users.db')
     c = conn.cursor()
-    # SAFE: parameterized query (SQLite qmark style)
     c.execute("SELECT id, username FROM users WHERE username = ?", (username,))
     res = c.fetchall()
     conn.close()
@@ -22,13 +21,27 @@ def search_secure():
     username = request.form.get('username','')
     sqli, pattern = is_sqli(username)
     if sqli:
-        # log and block
         log_detection(username, pattern, remote=request.remote_addr)
         return render_template('result.html', endpoint='SECURE (BLOCKED)', query=username, results=[("BLOCKED", "Detected SQLi pattern")])
-    # Optionally sanitize (not strictly needed with params)
+    
     username_clean = sanitize(username)
     results = query_db_param(username_clean)
     return render_template('result.html', endpoint='SECURE (ALLOWED)', query=username, results=results)
+
+# ✅ ADD THIS ROUTE HERE
+@app.route('/dashboard')
+def dashboard():
+    logs = []
+    try:
+        with open("detections.log", "r") as f:
+            for line in f:
+                parts = line.strip().split("\t")
+                if len(parts) == 4:
+                    logs.append(parts)
+    except FileNotFoundError:
+        logs = []
+
+    return render_template("dashboard.html", logs=logs)
 
 if __name__ == '__main__':
     app.run(port=5002, debug=True)

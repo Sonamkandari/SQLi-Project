@@ -1,13 +1,87 @@
 <!doctype html>
-<title>Result</title>
-<h3>{{endpoint}}</h3>
-<p>Query: <b>{{query}}</b></p>
-<h4>Results:</h4>
-<ul>
-  {% for r in results %}
-    <li>{{r}}</li>
-  {% else %}
-    <li>No results</li>
-  {% endfor %}
-</ul>
-<p><a href="/">Back</a></p>
+<html>
+<head>
+    <title>SQLi Result</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background: #f7f7f7;
+        }
+        .box {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 500px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .status-safe {
+            color: #0a7a00;
+            font-weight: bold;
+        }
+        .status-blocked {
+            color: #c40000;
+            font-weight: bold;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 10px;
+        }
+        th, td {
+            padding: 8px;
+            border: 1px solid #ccc;
+            background: #fafafa;
+        }
+        a.button {
+            display: inline-block;
+            padding: 8px 14px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        a.button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="box">
+
+        {% if "BLOCKED" in endpoint %}
+            <h3 class="status-blocked">🚨 {{ endpoint }}</h3>
+        {% else %}
+            <h3 class="status-safe">✔ {{ endpoint }}</h3>
+        {% endif %}
+
+        <p><strong>Query:</strong> {{ query }}</p>
+
+        <h4>Results:</h4>
+
+        {% if results %}
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                </tr>
+                {% for r in results %}
+                    <tr>
+                        <td>{{ r[0] }}</td>
+                        <td>{{ r[1] }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <p>No results found.</p>
+        {% endif %}
+
+        <br>
+        <a href="/" class="button">Back</a>
+
+    </div>
+
+</body>
+</html>
